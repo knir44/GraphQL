@@ -1,0 +1,7 @@
+.wrapper {
+  background: #fdecea;
+  color: var(--color-danger-dark);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+}

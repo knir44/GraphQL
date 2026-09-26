@@ -1,0 +1,170 @@
+{
+  "info": {
+    "_postman_id": "a6f1e2d0-1111-4a2b-9c3d-recipebox0001",
+    "name": "Recipe Box",
+    "description": "GraphQL CRUD API for the Recipe Box learning project. Uses the {{graphqlUrl}} and {{recipeId}} variables from the 'Recipe Box - Local' environment.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4001/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4001",
+              "path": ["health"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Queries",
+      "item": [
+        {
+          "name": "Get All Recipes",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query GetRecipes($search: String, $tag: String, $difficulty: Difficulty) {\n  recipes(search: $search, tag: $tag, difficulty: $difficulty) {\n    id\n    title\n    emoji\n    difficulty\n    prepTimeMinutes\n    tags\n    isFavorite\n  }\n}",
+                "variables": "{\n  \"search\": null,\n  \"tag\": null,\n  \"difficulty\": null\n}"
+              }
+            },
+            "url": {
+              "raw": "{{graphqlUrl}}",
+              "host": ["{{graphqlUrl}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Recipe By Id",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query GetRecipe($id: ID!) {\n  recipe(id: $id) {\n    id\n    title\n    description\n    emoji\n    prepTimeMinutes\n    difficulty\n    tags\n    isFavorite\n    ingredients {\n      id\n      name\n      quantity\n    }\n    steps\n    createdAt\n    updatedAt\n  }\n}",
+                "variables": "{\n  \"id\": \"{{recipeId}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{graphqlUrl}}",
+              "host": ["{{graphqlUrl}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Mutations",
+      "item": [
+        {
+          "name": "Create Recipe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json().data;",
+                  "if (data && data.createRecipe) {",
+                  "    pm.environment.set('recipeId', data.createRecipe.id);",
+                  "    console.log('Saved recipeId:', data.createRecipe.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation CreateRecipe($input: RecipeInput!) {\n  createRecipe(input: $input) {\n    id\n    title\n    difficulty\n    isFavorite\n  }\n}",
+                "variables": "{\n  \"input\": {\n    \"title\": \"Postman Pancakes\",\n    \"description\": \"Created from the Postman collection.\",\n    \"emoji\": \"\\ud83e\\udd5e\",\n    \"prepTimeMinutes\": 15,\n    \"difficulty\": \"EASY\",\n    \"tags\": [\"breakfast\", \"postman\"],\n    \"ingredients\": [\n      { \"name\": \"Flour\", \"quantity\": \"1 cup\" },\n      { \"name\": \"Milk\", \"quantity\": \"1 cup\" }\n    ],\n    \"steps\": [\"Mix everything\", \"Cook on a hot pan\"]\n  }\n}"
+              }
+            },
+            "url": {
+              "raw": "{{graphqlUrl}}",
+              "host": ["{{graphqlUrl}}"]
+            },
+            "description": "Creates a recipe and saves its id into the {{recipeId}} environment variable via the Tests script, so Update/Toggle/Delete below can use it automatically."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Recipe",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation UpdateRecipe($id: ID!, $input: RecipeInput!) {\n  updateRecipe(id: $id, input: $input) {\n    id\n    title\n    prepTimeMinutes\n    difficulty\n  }\n}",
+                "variables": "{\n  \"id\": \"{{recipeId}}\",\n  \"input\": {\n    \"title\": \"Postman Pancakes (Updated)\",\n    \"description\": \"Now with extra fluff.\",\n    \"emoji\": \"\\ud83e\\udd5e\",\n    \"prepTimeMinutes\": 20,\n    \"difficulty\": \"MEDIUM\",\n    \"tags\": [\"breakfast\", \"postman\", \"updated\"],\n    \"ingredients\": [\n      { \"name\": \"Flour\", \"quantity\": \"1.5 cups\" },\n      { \"name\": \"Milk\", \"quantity\": \"1.25 cups\" }\n    ],\n    \"steps\": [\"Mix everything\", \"Rest the batter\", \"Cook on a hot pan\"]\n  }\n}"
+              }
+            },
+            "url": {
+              "raw": "{{graphqlUrl}}",
+              "host": ["{{graphqlUrl}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Favorite",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation ToggleFavorite($id: ID!) {\n  toggleFavorite(id: $id) {\n    id\n    title\n    isFavorite\n  }\n}",
+                "variables": "{\n  \"id\": \"{{recipeId}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{graphqlUrl}}",
+              "host": ["{{graphqlUrl}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Recipe",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "mutation DeleteRecipe($id: ID!) {\n  deleteRecipe(id: $id)\n}",
+                "variables": "{\n  \"id\": \"{{recipeId}}\"\n}"
+              }
+            },
+            "url": {
+              "raw": "{{graphqlUrl}}",
+              "host": ["{{graphqlUrl}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

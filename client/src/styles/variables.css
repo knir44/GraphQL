@@ -1,0 +1,21 @@
+:root {
+  --color-bg: #fff8f0;
+  --color-surface: #ffffff;
+  --color-primary: #e8734a;
+  --color-primary-dark: #d15f37;
+  --color-secondary: #7a8b69;
+  --color-text: #4a3f35;
+  --color-text-muted: #8a7c6f;
+  --color-border: #f0e0d0;
+  --color-danger: #d1495b;
+  --color-danger-dark: #b83a4b;
+
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 4px 16px rgba(232, 115, 74, 0.12);
+  --shadow-modal: 0 12px 40px rgba(74, 63, 53, 0.25);
+
+  --font-heading: "Quicksand", "Segoe UI", sans-serif;
+}

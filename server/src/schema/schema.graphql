@@ -1,0 +1,58 @@
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+type Ingredient {
+  id: ID!
+  name: String!
+  quantity: String!
+}
+
+type Recipe {
+  id: ID!
+  title: String!
+  description: String
+  emoji: String
+  imageUrl: String
+  ingredients: [Ingredient!]!
+  steps: [String!]!
+  prepTimeMinutes: Int!
+  difficulty: Difficulty!
+  tags: [String!]!
+  isFavorite: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+input IngredientInput {
+  name: String!
+  quantity: String!
+}
+
+input RecipeInput {
+  title: String!
+  description: String
+  emoji: String
+  imageUrl: String
+  ingredients: [IngredientInput!]!
+  steps: [String!]!
+  prepTimeMinutes: Int!
+  difficulty: Difficulty!
+  tags: [String!]!
+}
+
+type Query {
+  "All recipes, optionally filtered by a case-insensitive title search, a tag, and/or difficulty."
+  recipes(search: String, tag: String, difficulty: Difficulty): [Recipe!]!
+  "A single recipe by id, or null if it doesn't exist."
+  recipe(id: ID!): Recipe
+}
+
+type Mutation {
+  createRecipe(input: RecipeInput!): Recipe!
+  updateRecipe(id: ID!, input: RecipeInput!): Recipe!
+  deleteRecipe(id: ID!): Boolean!
+  toggleFavorite(id: ID!): Recipe!
+}
