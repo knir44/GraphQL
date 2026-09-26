@@ -2,9 +2,21 @@
   "info": {
     "_postman_id": "a6f1e2d0-1111-4a2b-9c3d-recipebox0001",
     "name": "Recipe Box",
-    "description": "GraphQL CRUD API for the Recipe Box learning project. Uses the {{graphqlUrl}} and {{recipeId}} variables from the 'Recipe Box - Local' environment.",
+    "description": "GraphQL CRUD API for the Recipe Box learning project. Self-contained: no separate environment needed — {{graphqlUrl}} and {{recipeId}} are collection variables (see the collection's Variables tab). Just import this one file and run.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "variable": [
+    {
+      "key": "graphqlUrl",
+      "value": "http://localhost:4001/graphql",
+      "type": "string"
+    },
+    {
+      "key": "recipeId",
+      "value": "",
+      "type": "string"
+    }
+  ],
   "item": [
     {
       "name": "Health",
@@ -82,7 +94,7 @@
                 "exec": [
                   "const data = pm.response.json().data;",
                   "if (data && data.createRecipe) {",
-                  "    pm.environment.set('recipeId', data.createRecipe.id);",
+                  "    pm.collectionVariables.set('recipeId', data.createRecipe.id);",
                   "    console.log('Saved recipeId:', data.createRecipe.id);",
                   "}"
                 ]
@@ -103,7 +115,7 @@
               "raw": "{{graphqlUrl}}",
               "host": ["{{graphqlUrl}}"]
             },
-            "description": "Creates a recipe and saves its id into the {{recipeId}} environment variable via the Tests script, so Update/Toggle/Delete below can use it automatically."
+            "description": "Creates a recipe and saves its id into the {{recipeId}} collection variable via the Tests script, so Update/Toggle/Delete below can use it automatically."
           },
           "response": []
         },
